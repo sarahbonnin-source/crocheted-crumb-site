@@ -1,0 +1,70 @@
+<!-- gallery.html — Simple visual grid for future photos -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gallery — The Crocheted Crumb</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="page-gallery">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="brand">
+        <img src="logo.png" alt="The Crocheted Crumb logo" class="brand-logo" />
+        <span class="brand-text">The Crocheted Crumb</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <ul class="nav-list">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="products.html" class="nav-link">Totes & Cookies</a></li>
+          <li><a href="gallery.html" class="nav-link nav-link-active">Gallery</a></li>
+          <li><a href="contact.html" class="nav-link nav-cta">Contact / Order</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow">Gallery</p>
+        <h1>A quiet collection of totes, crumbs, and cozy corners.</h1>
+        <p class="page-hero-subtitle">
+          When you’re ready, we’ll swap these placeholders for real launch photos, flat-lays, and market-day shots.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="gallery-grid">
+          <!-- Each gallery item is a placeholder div you can replace with an <img> later -->
+          <div class="gallery-item">
+            <!-- Example: <img src="images/tote-1.jpg" alt="Neutral crochet tote on a chair" /> -->
+          </div>
+          <div class="gallery-item"></div>
+          <div class="gallery-item"></div>
+          <div class="gallery-item"></div>
+          <div class="gallery-item"></div>
+          <div class="gallery-item"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-brand">The Crocheted Crumb</p>
+      <p class="footer-meta">© <span id="year"></span> The Crocheted Crumb — handmade in small batches.</p>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
