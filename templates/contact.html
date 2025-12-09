@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section contact-page-section">
+    <div class="container contact-container">
+        <div class="contact-card">
+            <h2>Contact me!</h2>
+
+            <div class="contact-message-box">
+                <p>Email me for any questions, possible product requests, to talk about crocheting, and to possibly
+                    order a commission! Thanks for reaching out! -Sarah</p>
+            </div>
+
+            <div class="email-display">
+                <a href="mailto:snbonnin@gmail.com" class="email-link">snbonnin@gmail.com</a>
+            </div>
+
+            <a href="{{ url_for('index') }}" class="btn secondary-btn back-btn">Back to Home</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
