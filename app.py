@@ -14,13 +14,20 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
 
-# Initialize database on startup
-@app.before_first_request
-def initialize():
+# Initialize database on startup (Flask 3.0+ compatible)
+def initialize_database():
     """Initialize database connection and schema."""
     print("Initializing CRM system...")
     init_db_pool()
     init_database_schema()
+
+# Call initialization when module is loaded
+# Note: In production with multiple workers, consider using a migration tool
+try:
+    initialize_database()
+except Exception as e:
+    print(f"Warning: Could not initialize database: {e}")
+    print("Database features may not work until connection is established.")
 
 # Close database pool on shutdown
 atexit.register(close_db_pool)
