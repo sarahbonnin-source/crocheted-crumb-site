@@ -42,16 +42,19 @@ def generate_static_site(output_dir: str = "_preview"):
     gallery_items = get_gallery_items()
     contact_info = get_contact_info()
     
+    # Route configuration for url_for replacement
+    # Add new routes here when templates reference new endpoints
+    ROUTE_MAPPINGS = {
+        'index': './index.html',
+        'contact': './contact.html',
+    }
+    
     # Define url_for replacement for static site
     def url_for(endpoint, **kwargs):
         if endpoint == 'static':
             filename = kwargs.get('filename', '')
             return f"./static/{filename}"
-        elif endpoint == 'index':
-            return "./index.html"
-        elif endpoint == 'contact':
-            return "./contact.html"
-        return "#"
+        return ROUTE_MAPPINGS.get(endpoint, "#")
     
     # Add url_for to template globals
     env.globals['url_for'] = url_for
