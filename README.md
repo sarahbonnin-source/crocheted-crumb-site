@@ -3,6 +3,13 @@
 Welcome to the source code for **sarah.danielsbonnin.com**!
 This guide explains how to make changes, preview them, and deploy them to the live site.
 
+## 📋 Table of Contents
+- [Quick Start](#-recommended-online-development-github-codespaces)
+- [Local Development](#-local-development-macbook)
+- [Frontend Preview](#-frontend-preview-with-mock-data)
+- [PR Preview Environment](#-pull-request-previews)
+- [Deployment](#-deployment--verification)
+
 ## 🚀 Recommended: Online Development (GitHub Codespaces)
 The easiest way to work is using **GitHub Codespaces**. This gives you a full coding environment right in your browser, no installation required.
 
@@ -32,6 +39,44 @@ When you are happy with your changes:
 
 ---
 
+## 🎨 Frontend Preview with Mock Data
+
+You can develop and preview the frontend without needing the backend connected. This uses mock data for testing.
+
+### Using Mock Data Mode
+
+1. Set environment variable to enable mock mode (enabled by default):
+   ```bash
+   export MOCK_MODE=true
+   python app.py
+   ```
+
+2. Or generate a static preview:
+   ```bash
+   pip install Flask Jinja2
+   python generate_preview.py
+   ```
+   This creates a `_preview` folder with static HTML files you can open directly in your browser.
+
+---
+
+## 🔄 Pull Request Previews
+
+When you open a pull request, a preview environment is automatically created!
+
+### How it works:
+1. Open a PR with your changes
+2. GitHub Actions automatically generates a static preview
+3. A comment is added to your PR with a link to the preview
+4. The preview updates automatically when you push new commits
+
+### Benefits:
+- See your frontend changes before merging
+- Share preview links with others for feedback
+- No need to deploy to production to see changes
+
+---
+
 ## 💻 Local Development (Macbook)
 If you prefer working on your own machine.
 
@@ -58,7 +103,11 @@ If you prefer working on your own machine.
 ---
 
 ## 🌍 Deployment & Verification
-Deployment is **automatic**. Any time you push code to the `main` branch, Google Cloud Build picks it up.
+Deployment is **automatic**. Any time you push code to the `main` branch, GitHub Actions triggers a deployment to Google Cloud Run.
+
+### CI/CD Pipeline:
+- **Push to main**: Automatically deploys to production
+- **Pull Requests**: Generates a preview environment (see above)
 
 ### How to check:
 1.  **Wait**: Deployments usually take 60-120 seconds.
