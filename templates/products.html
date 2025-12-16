@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <h2>Product Catalog</h2>
+            <div style="display: flex; gap: 0.5rem;">
+                <a href="{{ url_for('products') }}" class="btn {% if not selected_category %}primary-btn{% else %}secondary-btn{% endif %}">All</a>
+                {% for cat in categories %}
+                <a href="{{ url_for('products', category=cat) }}" 
+                   class="btn {% if selected_category == cat %}primary-btn{% else %}secondary-btn{% endif %}">
+                    {{ cat|replace('_', ' ')|title }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="gallery-grid">
+            {% for product in products %}
+            <div class="gallery-item">
+                <a href="{{ url_for('product_detail', product_id=product.id) }}">
+                    {% if product.image_url %}
+                    <img src="{{ product.image_url }}" alt="{{ product.name }}" style="width: 100%; height: 300px; object-fit: cover; border-radius: 8px;">
+                    {% else %}
+                    <div class="placeholder-img" style="background-color: #E8D5C4; height: 300px;"></div>
+                    {% endif %}
+                </a>
+                <div class="gallery-caption">
+                    <strong>{{ product.name }}</strong><br>
+                    ${{ "%.2f"|format(product.price) }}
+                </div>
+            </div>
+            {% else %}
+            <p style="text-align: center; color: #718096;">No products available in this category.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

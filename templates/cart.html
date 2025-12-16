@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+    <div class="container">
+        <h1>Shopping Cart</h1>
+        
+        {% if cart_items %}
+        <div style="margin-top: 2rem;">
+            <table style="width: 100%; background-color: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <thead style="background-color: #F7FAFC;">
+                    <tr>
+                        <th style="padding: 1rem; text-align: left;">Product</th>
+                        <th style="padding: 1rem; text-align: right;">Price</th>
+                        <th style="padding: 1rem; text-align: center;">Quantity</th>
+                        <th style="padding: 1rem; text-align: right;">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr style="border-bottom: 1px solid #E2E8F0;">
+                        <td style="padding: 1rem;">{{ item.name }}</td>
+                        <td style="padding: 1rem; text-align: right;">${{ "%.2f"|format(item.price) }}</td>
+                        <td style="padding: 1rem; text-align: center;">{{ item.quantity }}</td>
+                        <td style="padding: 1rem; text-align: right;">${{ "%.2f"|format(item.price * item.quantity) }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr style="font-weight: bold; background-color: #F7FAFC;">
+                        <td colspan="3" style="padding: 1rem; text-align: right;">Total:</td>
+                        <td style="padding: 1rem; text-align: right;">${{ "%.2f"|format(total) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: flex-end;">
+                <a href="{{ url_for('products') }}" class="btn secondary-btn">Continue Shopping</a>
+                <a href="{{ url_for('checkout') }}" class="btn primary-btn">Proceed to Checkout</a>
+            </div>
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 3rem;">
+            <p style="font-size: 1.2rem; color: #718096; margin-bottom: 2rem;">Your cart is empty</p>
+            <a href="{{ url_for('products') }}" class="btn primary-btn">Browse Products</a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

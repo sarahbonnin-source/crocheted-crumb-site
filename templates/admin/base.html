@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin{% endblock %} - The Crocheted Crumb</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        .admin-nav {
+            background-color: #4A5568;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        .admin-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .admin-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .admin-nav a:hover {
+            text-decoration: underline;
+        }
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+        .alert-success {
+            background-color: #C6F6D5;
+            color: #22543D;
+        }
+        .alert-error {
+            background-color: #FED7D7;
+            color: #742A2A;
+        }
+        .alert-warning {
+            background-color: #FEEBC8;
+            color: #7C2D12;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .stat-card h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 0.875rem;
+            color: #718096;
+            text-transform: uppercase;
+        }
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2D3748;
+        }
+        .table-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background-color: #F7FAFC;
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            color: #4A5568;
+            border-bottom: 2px solid #E2E8F0;
+        }
+        td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #E2E8F0;
+        }
+        tr:hover {
+            background-color: #F7FAFC;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .badge-new { background-color: #FED7D7; color: #742A2A; }
+        .badge-responded { background-color: #BEE3F8; color: #2C5282; }
+        .badge-closed { background-color: #E2E8F0; color: #4A5568; }
+        .badge-pending { background-color: #FEEBC8; color: #7C2D12; }
+        .badge-paid { background-color: #C6F6D5; color: #22543D; }
+        .badge-processing { background-color: #BEE3F8; color: #2C5282; }
+        .badge-shipped { background-color: #D6BCFA; color: #44337A; }
+        .badge-delivered { background-color: #9AE6B4; color: #22543D; }
+        .badge-cancelled { background-color: #FED7D7; color: #742A2A; }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <h1 class="logo"><a href="{{ url_for('index') }}">The Crocheted Crumb</a></h1>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Public Site</a></li>
+                    <li><a href="{{ url_for('admin_logout') }}">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <nav class="admin-nav">
+        <div class="admin-container">
+            <ul>
+                <li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('admin_customers') }}">Customers</a></li>
+                <li><a href="{{ url_for('admin_products') }}">Products</a></li>
+                <li><a href="{{ url_for('admin_orders') }}">Orders</a></li>
+                <li><a href="{{ url_for('admin_inquiries') }}">Inquiries</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="admin-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2024 The Crocheted Crumb - Admin Panel</p>
+        </div>
+    </footer>
+</body>
+</html>
