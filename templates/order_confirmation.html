@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section">
+    <div class="container" style="text-align: center; padding: 3rem;">
+        <div style="background-color: #C6F6D5; color: #22543D; padding: 2rem; border-radius: 8px; margin-bottom: 2rem;">
+            <h1 style="margin-top: 0;">✓ Order Confirmed!</h1>
+            <p style="font-size: 1.2rem;">Thank you for your order!</p>
+        </div>
+        
+        <div style="background-color: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">
+            <h2>Order Details</h2>
+            <p><strong>Order Number:</strong> #{{ order.id }}</p>
+            <p><strong>Order Date:</strong> {{ order.created_at.strftime('%B %d, %Y %H:%M') }}</p>
+            <p><strong>Total:</strong> ${{ "%.2f"|format(order.total_amount) }}</p>
+            <p><strong>Status:</strong> <span style="color: #22543D; font-weight: 600;">{{ order.status }}</span></p>
+            
+            {% if order.stripe_payment_id %}
+            <p><strong>Payment ID:</strong> {{ order.stripe_payment_id }}</p>
+            <p style="background-color: #FEEBC8; color: #7C2D12; padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+                <strong>Note:</strong> This was a STUB payment. No real charges were made.
+            </p>
+            {% endif %}
+            
+            <h3 style="margin-top: 2rem;">Order Items</h3>
+            {% for item in items %}
+            <div style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid #E2E8F0;">
+                <span>{{ item.product_name }} x{{ item.quantity }}</span>
+                <span>${{ "%.2f"|format(item.price_at_purchase * item.quantity) }}</span>
+            </div>
+            {% endfor %}
+            
+            <div style="margin-top: 2rem;">
+                <p>We'll send you an email confirmation shortly.</p>
+                <a href="{{ url_for('index') }}" class="btn primary-btn" style="margin-top: 1rem; display: inline-block;">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

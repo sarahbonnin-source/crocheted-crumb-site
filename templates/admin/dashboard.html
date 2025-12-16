@@ -1,0 +1,88 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1 style="margin-bottom: 2rem;">Admin Dashboard</h1>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>Total Customers</h3>
+        <div class="value">{{ stats.total_customers }}</div>
+    </div>
+    <div class="stat-card">
+        <h3>Total Orders</h3>
+        <div class="value">{{ stats.total_orders }}</div>
+    </div>
+    <div class="stat-card">
+        <h3>Total Revenue</h3>
+        <div class="value">${{ "%.2f"|format(stats.total_revenue) }}</div>
+    </div>
+    <div class="stat-card">
+        <h3>Products</h3>
+        <div class="value">{{ stats.total_products }}</div>
+    </div>
+    <div class="stat-card">
+        <h3>New Inquiries</h3>
+        <div class="value">{{ stats.new_inquiries }}</div>
+    </div>
+</div>
+
+<h2 style="margin-bottom: 1rem;">Recent Orders</h2>
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Customer</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in recent_orders %}
+            <tr>
+                <td><a href="{{ url_for('admin_order_detail', order_id=order.id) }}">#{{ order.id }}</a></td>
+                <td>{{ order.customer_name }}</td>
+                <td>${{ "%.2f"|format(order.total_amount) }}</td>
+                <td><span class="badge badge-{{ order.status }}">{{ order.status }}</span></td>
+                <td>{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5" style="text-align: center; color: #718096;">No orders yet</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<h2 style="margin-bottom: 1rem;">Recent Inquiries</h2>
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inquiry in recent_inquiries %}
+            <tr>
+                <td><a href="{{ url_for('admin_inquiry_detail', inquiry_id=inquiry.id) }}">{{ inquiry.name }}</a></td>
+                <td>{{ inquiry.email }}</td>
+                <td><span class="badge badge-{{ inquiry.status }}">{{ inquiry.status }}</span></td>
+                <td>{{ inquiry.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" style="text-align: center; color: #718096;">No inquiries yet</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

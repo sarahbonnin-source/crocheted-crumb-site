@@ -1,0 +1,51 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1>Products</h1>
+    <div style="display: flex; gap: 0.5rem;">
+        <a href="{{ url_for('admin_products') }}" class="btn secondary-btn">All</a>
+        {% for cat in categories %}
+        <a href="{{ url_for('admin_products', category=cat) }}" 
+           class="btn {% if selected_category == cat %}primary-btn{% else %}secondary-btn{% endif %}">
+            {{ cat|replace('_', ' ')|title }}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.category|replace('_', ' ')|title }}</td>
+                <td>${{ "%.2f"|format(product.price) }}</td>
+                <td>{{ product.stock_quantity }}</td>
+                <td>{{ product.created_at.strftime('%Y-%m-%d') }}</td>
+                <td><a href="{{ url_for('admin_product_detail', product_id=product.id) }}">View</a></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" style="text-align: center; color: #718096;">No products found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

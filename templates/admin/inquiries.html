@@ -1,0 +1,49 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Inquiries{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1>Inquiries</h1>
+    <div style="display: flex; gap: 0.5rem;">
+        <a href="{{ url_for('admin_inquiries') }}" class="btn secondary-btn">All</a>
+        {% for s in statuses %}
+        <a href="{{ url_for('admin_inquiries', status=s) }}" 
+           class="btn {% if selected_status == s %}primary-btn{% else %}secondary-btn{% endif %}">
+            {{ s|title }}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inquiry in inquiries %}
+            <tr>
+                <td>{{ inquiry.id }}</td>
+                <td>{{ inquiry.name }}</td>
+                <td>{{ inquiry.email }}</td>
+                <td><span class="badge badge-{{ inquiry.status }}">{{ inquiry.status }}</span></td>
+                <td>{{ inquiry.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td><a href="{{ url_for('admin_inquiry_detail', inquiry_id=inquiry.id) }}">View</a></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" style="text-align: center; color: #718096;">No inquiries found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

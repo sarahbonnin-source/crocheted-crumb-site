@@ -1,0 +1,45 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Customers{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1>Customers</h1>
+    <form method="GET" style="display: flex; gap: 0.5rem;">
+        <input type="text" name="search" placeholder="Search by name or email..." 
+               value="{{ search }}" style="padding: 0.5rem; border: 1px solid #E2E8F0; border-radius: 4px; min-width: 300px;">
+        <button type="submit" class="btn secondary-btn">Search</button>
+    </form>
+</div>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            <tr>
+                <td>{{ customer.id }}</td>
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.email }}</td>
+                <td>{{ customer.phone or '-' }}</td>
+                <td>{{ customer.created_at.strftime('%Y-%m-%d') }}</td>
+                <td><a href="{{ url_for('admin_customer_detail', customer_id=customer.id) }}">View</a></td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" style="text-align: center; color: #718096;">No customers found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

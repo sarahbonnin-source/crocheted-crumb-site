@@ -1,0 +1,41 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Inquiry Detail{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+    <a href="{{ url_for('admin_inquiries') }}" style="color: #8B7355;">&larr; Back to Inquiries</a>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1>Inquiry #{{ inquiry.id }}</h1>
+    <span class="badge badge-{{ inquiry.status }}" style="font-size: 1rem;">{{ inquiry.status }}</span>
+</div>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+    <div style="background-color: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <h2 style="margin-top: 0;">Message</h2>
+        <p style="white-space: pre-wrap; line-height: 1.6;">{{ inquiry.message }}</p>
+    </div>
+    
+    <div style="background-color: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <h2 style="margin-top: 0;">Contact Details</h2>
+        <p><strong>Name:</strong> {{ inquiry.name }}</p>
+        <p><strong>Email:</strong> <a href="mailto:{{ inquiry.email }}">{{ inquiry.email }}</a></p>
+        <p><strong>Submitted:</strong> {{ inquiry.created_at.strftime('%B %d, %Y %H:%M') }}</p>
+        {% if inquiry.responded_at %}
+        <p><strong>Responded:</strong> {{ inquiry.responded_at.strftime('%B %d, %Y %H:%M') }}</p>
+        {% endif %}
+        
+        <form method="POST" action="{{ url_for('admin_update_inquiry_status', inquiry_id=inquiry.id) }}" style="margin-top: 1.5rem;">
+            <label for="status" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Update Status:</label>
+            <select name="status" id="status" style="width: 100%; padding: 0.5rem; border: 1px solid #E2E8F0; border-radius: 4px; margin-bottom: 0.5rem;">
+                <option value="new" {% if inquiry.status == 'new' %}selected{% endif %}>New</option>
+                <option value="responded" {% if inquiry.status == 'responded' %}selected{% endif %}>Responded</option>
+                <option value="closed" {% if inquiry.status == 'closed' %}selected{% endif %}>Closed</option>
+            </select>
+            <button type="submit" class="btn primary-btn" style="width: 100%;">Update Status</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -3,6 +3,17 @@
 Welcome to the source code for **sarah.danielsbonnin.com**!
 This guide explains how to make changes, preview them, and deploy them to the live site.
 
+## 🎉 NEW: CRM System Integration
+
+This site now includes a full Customer Relationship Management (CRM) system with:
+- **Product Catalog**: Browse and purchase handmade crochet items
+- **Shopping Cart & Checkout**: Complete order processing (with Stripe stubs)
+- **Admin Dashboard**: Manage customers, orders, products, and inquiries
+- **Database Integration**: Cloud SQL (PostgreSQL) and Firestore
+- **Sample Data**: Pre-loaded test data for development
+
+📖 **[Read the CRM Documentation](CRM_DOCUMENTATION.md)** for detailed setup and usage instructions.
+
 ## 🚀 Recommended: Online Development (GitHub Codespaces)
 The easiest way to work is using **GitHub Codespaces**. This gives you a full coding environment right in your browser, no installation required.
 
