@@ -43,8 +43,8 @@ jobs:
           PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           VERSION: ${{ steps.version.outputs.tag }}
         run: |
-          docker build -t us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:$VERSION .
-          docker build -t us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:latest .
+          docker build -t us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:$VERSION \
+                       -t us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:latest .
           docker push us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:$VERSION
           docker push us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:latest
       
