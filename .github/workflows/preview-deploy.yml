@@ -1,0 +1,81 @@
+name: Preview Deployment
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
+
+jobs:
+  deploy-preview:
+    name: Deploy to Preview Environment
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+      
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+      
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev
+      
+      - name: Build and Push Docker Image
+        env:
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          docker build -t us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:beta .
+          docker push us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:beta
+      
+      - name: Deploy to Cloud Run (Beta)
+        env:
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          gcloud run deploy sarah-danielsbonnin-com-beta \
+            --image us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:beta \
+            --region us-central1 \
+            --platform managed \
+            --allow-unauthenticated
+      
+      - name: Get Preview URL
+        id: preview-url
+        run: |
+          URL=$(gcloud run services describe sarah-danielsbonnin-com-beta --region us-central1 --format 'value(status.url)')
+          echo "url=$URL" >> $GITHUB_OUTPUT
+          echo "Preview URL: $URL"
+      
+      - name: Comment PR with Preview URL
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const previewUrl = '${{ steps.preview-url.outputs.url }}';
+            const comment = `## 🎨 Preview Deployment Ready!
+            
+            Your changes have been deployed to the preview environment for acceptance testing.
+            
+            🔗 **Preview URL:** ${previewUrl}
+            
+            This preview is updated automatically with each new commit to this PR.`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
