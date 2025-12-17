@@ -99,7 +99,7 @@ gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
 gcloud iam service-accounts add-iam-policy-binding github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com \
   --project="YOUR_PROJECT_ID" \
   --role="roles/iam.workloadIdentityUser" \
-  --member="principalSet://iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/github-pool/attribute.repository/sarahbonnin-source/crocheted-crumb-site"
+  --member="principalSet://iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/github-pool/attribute.repository/YOUR_GITHUB_USERNAME/YOUR_REPO_NAME"
 ```
 
 ### 5. Get the WIF_PROVIDER value
