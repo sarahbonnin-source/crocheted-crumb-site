@@ -1,0 +1,25 @@
+steps:
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:beta', '.']
+
+  # Push the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:beta']
+
+  # Deploy to Cloud Run (Beta Service)
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'sarah-danielsbonnin-com-beta'
+      - '--image'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:beta'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:beta'

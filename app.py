@@ -11,5 +11,17 @@ def index():
 def contact():
     return render_template("contact.html")
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+@app.route("/products")
+def products():
+    return render_template("products.html")
+
+@app.route("/gallery")
+def gallery():
+    return render_template("gallery.html")
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))

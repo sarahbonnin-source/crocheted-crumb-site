@@ -1,64 +1,180 @@
-{% extends "base.html" %}
+<!-- index.html — Home page for The Crocheted Crumb -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>The Crocheted Crumb — Cozy Crochet & Cookies</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  <!-- Optional: add a favicon later -->
+</head>
+<body class="page-home">
+  <!-- Site-wide header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="{{ url_for('index') }}" class="brand">
+        <!-- Replace src with your actual logo file path -->
+        <img src="logo.png" alt="The Crocheted Crumb logo" class="brand-logo" />
+        <span class="brand-text">The Crocheted Crumb</span>
+      </a>
 
-{% block content %}
-<main>
+      <!-- Desktop navigation -->
+      <nav class="site-nav" aria-label="Primary navigation">
+        <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <ul class="nav-list">
+          <li><a href="{{ url_for('index') }}" class="nav-link nav-link-active">Home</a></li>
+          <li><a href="{{ url_for('about') }}" class="nav-link">About</a></li>
+          <li><a href="{{ url_for('products') }}" class="nav-link">Totes & Cookies</a></li>
+          <li><a href="{{ url_for('gallery') }}" class="nav-link">Gallery</a></li>
+          <li><a href="{{ url_for('contact') }}" class="nav-link nav-cta">Contact / Order</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero section -->
+  <main>
     <section class="hero">
-        <div class="container hero-content">
-            <h2>Handcrafted with Love - 2025 Preview</h2>
-            <p>Cozy, cute, and custom crochet creations for you and your loved ones.</p>
-            <a href="#gallery" class="btn primary-btn">View Collection</a>
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">handmade calm • warm mornings</p>
+          <h1>Cozy crochet totes & brown butter cookies for city days in slow motion.</h1>
+          <p class="hero-subtitle">
+            Small-batch, handmade pieces — think soft yarn, warm crumbs, and rainy café afternoons you can carry with you.
+          </p>
+          <div class="hero-actions">
+            <a href="{{ url_for('products') }}" class="btn btn-primary">Browse Totes & Cookies</a>
+            <a href="{{ url_for('about') }}" class="btn btn-ghost">Meet The Crocheted Crumb</a>
+          </div>
+          <div class="hero-badges">
+            <span class="pill">Small-batch made</span>
+            <span class="pill">Local pick-up</span>
+            <span class="pill">Made with love</span>
+          </div>
         </div>
+
+        <!-- Hero image placeholder: replace with real photo later -->
+        <div class="hero-media">
+          <div class="hero-photo hero-photo-main">
+            <span class="hero-photo-label">Crochet city tote</span>
+          </div>
+          <div class="hero-photo hero-photo-secondary">
+            <span class="hero-photo-label">Brown butter cookies</span>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section id="about" class="section about-section">
-        <div class="container">
-            <div class="section-header">
-                <h3>About the Artist</h3>
-                <div class="divider"></div>
-            </div>
-            <div class="about-content">
-                <p>Welcome to The Crocheted Crumb! I'm Sarah, and I turn yarn into keepsakes. Every stitch is made
-                    with care, patience, and a whole lot of love. Whether you're looking for a unique gift or a
-                    treat for yourself, I hope you find something that brings you joy.</p>
-            </div>
+    <!-- Highlight section: what you offer -->
+    <section class="section section-split">
+      <div class="container split-grid">
+        <div>
+          <p class="eyebrow">What is The Crocheted Crumb?</p>
+          <h2>Slow, textured pieces for people who love warm kitchens and long walks.</h2>
+          <p>
+            The Crocheted Crumb blends handmade crochet totes with small-batch cookies. Every piece is stitched slowly
+            and baked in tiny batches, meant to feel like a recipe card passed down and a bag you’ve carried for years.
+          </p>
         </div>
+        <div class="feature-list">
+          <article class="feature-card">
+            <h3>Handmade Crochet Totes</h3>
+            <p>
+              Thick, textured yarn, neutral tones, and city-friendly sizing. Designed for school runs, coffee dates,
+              and train rides with a book.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Brown Butter Cookies</h3>
+            <p>
+              Soft centers, crisp edges, and sea-salt tops. Think cozy apartment kitchen, even when you’re on the go.
+            </p>
+          </article>
+          <article class="feature-card">
+            <h3>Thoughtful Packaging</h3>
+            <p>
+              Kraft paper, twine bows, handwritten batch labels — everything feels like a tiny gift, even if it’s for you.
+            </p>
+          </article>
+        </div>
+      </div>
     </section>
 
-    <section id="gallery" class="section gallery-section">
-        <div class="container">
-            <div class="section-header">
-                <h3>Latest Creations</h3>
-                <div class="divider"></div>
-            </div>
-            <div class="gallery-grid">
-                <!-- Placeholders for images -->
-                <div class="gallery-item">
-                    <div class="placeholder-img" style="background-color: #E8D5C4;"></div>
-                    <div class="gallery-caption">Plushies</div>
-                </div>
-                <div class="gallery-item">
-                    <div class="placeholder-img" style="background-color: #B0C4B1;"></div>
-                    <div class="gallery-caption">Wearables</div>
-                </div>
-                <div class="gallery-item">
-                    <div class="placeholder-img" style="background-color: #D7B9B3;"></div>
-                    <div class="gallery-caption">Home Decor</div>
-                </div>
-            </div>
+    <!-- Featured products preview -->
+    <section class="section section-muted">
+      <div class="container">
+        <div class="section-header">
+          <p class="eyebrow">Featured</p>
+          <h2>Signature Totes & House Cookies</h2>
+          <p>Here’s a quick peek — full details live on the Totes & Cookies page.</p>
         </div>
+
+        <div class="card-grid">
+          <article class="product-card">
+            <div class="product-image-placeholder">
+              <!-- Replace with real product photo -->
+            </div>
+            <div class="product-body">
+              <h3>Downtown Oat Tote</h3>
+              <p class="product-tagline">Neutral, thick texture with room for your book, journal, and cookie box.</p>
+              <p class="product-meta">Handmade to order • Neutral yarn • Everyday carry</p>
+              <a href="products.html#totes" class="product-link">View crochet totes →</a>
+            </div>
+          </article>
+
+          <article class="product-card">
+            <div class="product-image-placeholder product-image-cookie">
+              <!-- Replace with real cookie photo -->
+            </div>
+            <div class="product-body">
+              <h3>Brown Butter Crumb Cookies</h3>
+              <p class="product-tagline">Soft centers, slow browned butter, and a little sea salt sparkle.</p>
+              <p class="product-meta">Small batch only • Best enjoyed day-of • Local pick-up</p>
+              <a href="products.html#cookies" class="product-link">View cookie details →</a>
+            </div>
+          </article>
+        </div>
+      </div>
     </section>
 
-    <section id="contact" class="section contact-section">
-        <div class="container">
-            <div class="section-header">
-                <h3>Get in Touch</h3>
-                <div class="divider"></div>
-            </div>
-            <div class="contact-content">
-                <p>Have a custom order in mind? I'd love to hear from you!</p>
-                <a href="{{ url_for('contact') }}" class="btn secondary-btn">Contact Me</a>
-            </div>
+    <!-- Launch / social section -->
+    <section class="section">
+      <div class="container launch-grid">
+        <div>
+          <p class="eyebrow">New here?</p>
+          <h2>Follow the crumbs & stitches.</h2>
+          <p>
+            Launch week includes cozy desk reels, tote previews, and cookie drops. Follow along to see behind-the-scenes
+            and know when the next batch is live.
+          </p>
         </div>
+        <div class="social-card">
+          <h3>Find The Crocheted Crumb</h3>
+          <ul class="social-list">
+            <li><span class="social-label">Instagram</span><span class="social-value">@thecrochetedcrumb</span></li>
+            <li><span class="social-label">YouTube</span><span class="social-value">The Crocheted Crumb</span></li>
+            <li><span class="social-label">Email</span><span class="social-value">hello@thecrochetedcrumb.com</span></li>
+          </ul>
+          <a href="{{ url_for('contact') }}" class="btn btn-primary btn-full">Contact / Order</a>
+        </div>
+      </div>
     </section>
-</main>
-{% endblock %}
+  </main>
+
+  <!-- Site-wide footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-brand">The Crocheted Crumb</p>
+      <p class="footer-text">
+        warm • handmade • slow comfort • cozy city living
+      </p>
+      <p class="footer-meta">© <span id="year"></span> The Crocheted Crumb — handmade in small batches.</p>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
