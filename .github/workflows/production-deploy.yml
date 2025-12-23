@@ -1,0 +1,66 @@
+name: Production Deployment
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      id-token: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Extract version from tag
+        id: version
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "Deploying version: $TAG"
+      
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+      
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+      
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev
+      
+      - name: Build and Push Docker Image
+        env:
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          VERSION: ${{ steps.version.outputs.tag }}
+        run: |
+          docker build -t us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:$VERSION \
+                       -t us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:latest .
+          docker push us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:$VERSION
+          docker push us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:latest
+      
+      - name: Deploy to Cloud Run (Production)
+        env:
+          PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+          gcloud run deploy sarah-danielsbonnin-com \
+            --image us-central1-docker.pkg.dev/$PROJECT_ID/danielsbonnin-com/sarah-danielsbonnin-com:latest \
+            --region us-central1 \
+            --platform managed \
+            --allow-unauthenticated
+      
+      - name: Verify Production Deployment
+        run: |
+          URL=$(gcloud run services describe sarah-danielsbonnin-com --region us-central1 --format 'value(status.url)')
+          echo "✅ Production deployment complete!"
+          echo "🌍 Site URL: $URL"
+          echo "🏷️  Version: ${{ steps.version.outputs.tag }}"
